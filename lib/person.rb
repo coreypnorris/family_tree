@@ -21,19 +21,19 @@ class Person < ActiveRecord::Base
   end
 
   def father
-    if father_id.nil?
-      nil
-    else
-      Person.find(father_id)
-    end
+    Person.find(father_id)
   end
 
   def mother
-    if mother_id.nil?
-      nil
-    else
-      Person.find(mother_id)
-    end
+    Person.find(mother_id)
+  end
+
+  def grandfather(parent)
+    Person.find(parent.father_id)
+  end
+
+  def grandmother(parent)
+    Person.find(parent.mother_id)
   end
 
 private

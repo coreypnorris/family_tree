@@ -16,6 +16,7 @@ def menu
     puts 'Press m to make a marriage.'
     puts 'Press s to see who someone is married to.'
     puts "Press p to see who someone's parents are."
+    puts "Press g to see who someone's grandparents are."
     puts 'Press e to exit.'
     choice = gets.chomp
 
@@ -30,6 +31,8 @@ def menu
       show_marriage
     when 'p'
       show_parents
+    when 'g'
+      show_grandparents
     when 'e'
       exit
     end
@@ -83,6 +86,32 @@ def show_parents
   person = Person.find(gets.chomp)
   puts "#{person.father.id}) #{person.father.name} is #{person.name}'s father"
   puts "#{person.mother.id}) #{person.mother.name} is #{person.name}'s mother"
+end
+
+def show_grandparents
+  list
+  puts "Enter the number of the relative and I'll show you who their grand-parents are."
+  person = Person.find(gets.chomp)
+  puts "Do you want to see #{person.name}'s father's parents or mother's parents?"
+  puts "Press 'f' for father's parents"
+  puts "Press 'm' for mother's parents"
+  puts "Press any other key to return to the main menu"
+  input = gets.chomp.downcase
+  if input == 'f'
+    dad = Person.find(person.father_id)
+    grandfather = person.grandfather(dad)
+    puts "#{person.name}'s grandfather on his father's side is #{grandfather.id}) #{grandfather.name}"
+    grandmother = person.grandmother(dad)
+    puts "#{person.name}'s grandmother on his father's side is #{grandmother.id}) #{grandmother.name}"
+  elsif input == 'm'
+    mom = Person.find(person.mother_id)
+    grandfather = person.grandfather(mom)
+    puts "#{person.name}'s grandfather on his mother's side is #{grandfather.id}) #{grandfather.name}"
+    grandmother = person.grandmother(mom)
+    puts "#{person.name}'s grandmother on his mother's side is #{grandmother.id}) #{grandmother.name}"
+  else
+    menu
+  end
 end
 
 menu
