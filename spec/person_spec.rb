@@ -17,6 +17,15 @@ describe Person do
     end
   end
 
+  context '#child' do
+    it 'returns the person with their child_id' do
+      earl = Person.create(name: 'Earl')
+      johnny = Person.create(name: 'Johnny')
+      earl.update(child_id: johnny.id)
+      earl.child.should eq johnny
+    end
+  end
+
   it "updates the spouse's id when it's spouse_id is changed" do
     earl = Person.create(:name => 'Earl')
     steve = Person.create(:name => 'Steve')

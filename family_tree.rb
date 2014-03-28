@@ -13,7 +13,7 @@ def menu
   loop do
     puts 'Press a to add a family member.'
     puts 'Press l to list out the family members.'
-    puts 'Press m to add who someone is married to.'
+    puts 'Press m to make a marriage.'
     puts 'Press s to see who someone is married to.'
     puts 'Press e to exit.'
     choice = gets.chomp
@@ -36,8 +36,15 @@ end
 def add_person
   puts 'What is the name of the family member?'
   name = gets.chomp
-  Person.create(:name => name)
-  puts name + " was added to the family tree.\n\n"
+  person = Person.create(:name => name)
+  list
+  puts "Enter the number of #{person.name}'s father."
+  father_choice = gets.chomp.to_i
+  person.update(father_id: father_choice)
+  puts "Enter the number of the #{person.name}'s mother."
+  mother_choice = gets.chomp.to_i
+  person.update(mother_id: mother_choice)
+  puts name + " the child of #{Person.find(father_choice).name} & #{Person.find(mother_choice).name} was added to the family tree.\n\n"
 end
 
 def add_marriage

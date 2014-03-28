@@ -3,11 +3,20 @@ class Person < ActiveRecord::Base
 
   after_save :make_marriage_reciprocal
 
+
   def spouse
     if spouse_id.nil?
       nil
     else
       Person.find(spouse_id)
+    end
+  end
+
+  def child
+    if child_id.nil?
+      nil
+    else
+      Person.find(child_id)
     end
   end
 
