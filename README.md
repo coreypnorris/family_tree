@@ -12,7 +12,7 @@ Future features:
 * Tracking divorces
 --------------------
 * DONE - Let users enter a person, and describe that person as the child of two people.
-* Flesh out the user interface to show a list of people, and lets you choose one to see who they're married to and who their parents are.
+* DONE - Flesh out the user interface to show a list of people, and lets you choose one to see who they're married to and who their parents are.
 * Show who somebody's grandparents and grandchildren are.
 * Add support for siblings, cousins, uncles, aunts, etc.
 * Finally, add support for divorces, which may be almost as difficult in the database as in real life.

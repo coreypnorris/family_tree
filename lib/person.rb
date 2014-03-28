@@ -20,6 +20,22 @@ class Person < ActiveRecord::Base
     end
   end
 
+  def father
+    if father_id.nil?
+      nil
+    else
+      Person.find(father_id)
+    end
+  end
+
+  def mother
+    if mother_id.nil?
+      nil
+    else
+      Person.find(mother_id)
+    end
+  end
+
 private
 
   def make_marriage_reciprocal

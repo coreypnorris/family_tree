@@ -15,6 +15,7 @@ def menu
     puts 'Press l to list out the family members.'
     puts 'Press m to make a marriage.'
     puts 'Press s to see who someone is married to.'
+    puts "Press p to see who someone's parents are."
     puts 'Press e to exit.'
     choice = gets.chomp
 
@@ -27,6 +28,8 @@ def menu
       add_marriage
     when 's'
       show_marriage
+    when 'p'
+      show_parents
     when 'e'
       exit
     end
@@ -34,15 +37,15 @@ def menu
 end
 
 def add_person
+  list
+  puts "Enter the number of the new person's father."
+  father_choice = gets.chomp.to_i
+  puts "Enter the number of the new person's mother."
+  mother_choice = gets.chomp.to_i
   puts 'What is the name of the family member?'
   name = gets.chomp
   person = Person.create(:name => name)
-  list
-  puts "Enter the number of #{person.name}'s father."
-  father_choice = gets.chomp.to_i
   person.update(father_id: father_choice)
-  puts "Enter the number of the #{person.name}'s mother."
-  mother_choice = gets.chomp.to_i
   person.update(mother_id: mother_choice)
   puts name + " the child of #{Person.find(father_choice).name} & #{Person.find(mother_choice).name} was added to the family tree.\n\n"
 end
@@ -74,4 +77,25 @@ def show_marriage
   puts person.name + " is married to " + spouse.name + "."
 end
 
+def show_parents
+  list
+  puts "Enter the number of the relative and I'll show you who their parents are."
+  person = Person.find(gets.chomp)
+  puts "#{person.father.id}) #{person.father.name} is #{person.name}'s father"
+  puts "#{person.mother.id}) #{person.mother.name} is #{person.name}'s mother"
+end
+
 menu
+
+
+
+
+
+
+
+
+
+
+
+
+

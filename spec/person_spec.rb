@@ -26,6 +26,22 @@ describe Person do
     end
   end
 
+  context '#father' do
+    it 'returns the person with their father_id' do
+      bill = Person.create(name: 'Bill')
+      nancy = Person.create(name: 'Nancy', father_id: bill.id)
+      nancy.father.should eq bill
+    end
+  end
+
+  context '#mother' do
+    it 'returns the person with their mother_id' do
+      suzy = Person.create(name: 'Suzy')
+      nancy = Person.create(name: 'Nancy', mother_id: suzy.id)
+      nancy.mother.should eq suzy
+    end
+  end
+
   it "updates the spouse's id when it's spouse_id is changed" do
     earl = Person.create(:name => 'Earl')
     steve = Person.create(:name => 'Steve')
