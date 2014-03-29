@@ -17,12 +17,19 @@ describe Person do
     end
   end
 
-  context '#child' do
-    it 'returns the person with their child_id' do
-      earl = Person.create(name: 'Earl')
-      johnny = Person.create(name: 'Johnny')
-      earl.update(child_id: johnny.id)
-      earl.child.should eq johnny
+  context '#children' do
+    it 'returns all of the children of the person' do
+      margaret = Person.create(name: 'Margaret')
+      phillip = Person.create(name: 'Phillip')
+      lisa = Person.create(name: 'Lisa', mother_id: margaret.id, father_id: phillip.id)
+      joshua = Person.create(name: 'Joshua', mother_id: margaret.id, father_id: phillip.id)
+      margaret.children.should eq [lisa, joshua]
+    end
+
+    it 'returns all of the children of the person' do
+      margaret = Person.create(name: 'Margaret')
+      phillip = Person.create(name: 'Phillip')
+      margaret.children.should eq nil
     end
   end
 
@@ -63,6 +70,33 @@ describe Person do
       joshua = Person.create(name: 'Joshua', mother_id: carol.id, father_id: phillip.id)
       joshua.grandmother(carol).should eq margaret
       joshua.grandmother(phillip).should eq lisa
+    end
+  end
+
+  context '#grandkids' do
+    it "returns a persons children's children" do
+      margaret = Person.create(name: 'Margaret')
+      lisa = Person.create(name: 'Lisa', mother_id: margaret.id)
+      carol = Person.create(name: 'Carol', mother_id: lisa.id)
+      debbie = Person.create(name: 'Debbie', mother_id: lisa.id)
+      margaret.grandkids(lisa).should eq [carol, debbie]
+    end
+
+     it 'returns nil if they have no grandkids' do
+      margaret = Person.create(name: 'Margaret')
+      phillip = Person.create(name: 'Phillip', mother_id: margaret.id)
+      margaret.grandkids(phillip).should eq nil
+    end
+  end
+
+  context '#siblings' do
+    it 'returns all of the persons siblings' do
+      johnny = Person.create(name: 'Johnny')
+      carrie = Person.create(name: 'Carrie')
+      steve = Person.create(name: 'Steve', mother_id: carrie.id, father_id: johnny.id)
+      joey = Person.create(name: 'Joey', mother_id: carrie.id, father_id: johnny.id)
+      kimberly = Person.create(name: 'Kimberly', mother_id: carrie.id, father_id: johnny.id)
+      kimberly.siblings.should eq [steve, joey]
     end
   end
 

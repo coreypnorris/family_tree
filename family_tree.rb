@@ -11,12 +11,16 @@ def menu
   puts 'What would you like to do?'
 
   loop do
+    puts "\n"
     puts 'Press a to add a family member.'
     puts 'Press l to list out the family members.'
     puts 'Press m to make a marriage.'
     puts 'Press s to see who someone is married to.'
     puts "Press p to see who someone's parents are."
+    puts "Press c to see someone's children."
     puts "Press g to see who someone's grandparents are."
+    puts "Press k to see who someone's grandkids are."
+    puts "Press q to see who someone's siblings are."
     puts 'Press e to exit.'
     choice = gets.chomp
 
@@ -31,8 +35,14 @@ def menu
       show_marriage
     when 'p'
       show_parents
+    when 'c'
+      show_children
     when 'g'
       show_grandparents
+    when 'k'
+      show_grandkids
+    when 'q'
+      show_siblings
     when 'e'
       exit
     end
@@ -76,8 +86,11 @@ def show_marriage
   list
   puts "Enter the number of the relative and I'll show you who they're married to."
   person = Person.find(gets.chomp)
-  spouse = Person.find(person.spouse_id)
-  puts person.name + " is married to " + spouse.name + "."
+  if person.spouse == nil
+    puts "#{person.name} isn't married."
+  else
+    puts "#{person.name} is married to #{person.spouse.name}."
+  end
 end
 
 def show_parents
@@ -86,6 +99,19 @@ def show_parents
   person = Person.find(gets.chomp)
   puts "#{person.father.id}) #{person.father.name} is #{person.name}'s father"
   puts "#{person.mother.id}) #{person.mother.name} is #{person.name}'s mother"
+end
+
+def show_children
+  list
+  puts "Enter the number of the relative and I'll show you who their children are."
+  person = Person.find(gets.chomp)
+  if person.children == nil
+    puts "#{person.name} has no children."
+  else
+    person.children.each do |child|
+      puts "#{child.name} is the child of #{child.father.name} & #{child.mother.name}."
+    end
+  end
 end
 
 def show_grandparents
@@ -100,29 +126,47 @@ def show_grandparents
   if input == 'f'
     dad = Person.find(person.father_id)
     grandfather = person.grandfather(dad)
-    puts "#{person.name}'s grandfather on his father's side is #{grandfather.id}) #{grandfather.name}"
+    puts "#{person.name}'s grandfather on his father's side is #{grandfather.id}33 #{grandfather.name}"
     grandmother = person.grandmother(dad)
-    puts "#{person.name}'s grandmother on his father's side is #{grandmother.id}) #{grandmother.name}"
+    puts "#{person.name}'s grandmother on his father's side is #{grandmother.id} #{grandmother.name}"
   elsif input == 'm'
     mom = Person.find(person.mother_id)
     grandfather = person.grandfather(mom)
-    puts "#{person.name}'s grandfather on his mother's side is #{grandfather.id}) #{grandfather.name}"
+    puts "#{person.name}'s grandfather on his mother's side is #{grandfather.id} #{grandfather.name}"
     grandmother = person.grandmother(mom)
-    puts "#{person.name}'s grandmother on his mother's side is #{grandmother.id}) #{grandmother.name}"
+    puts "#{person.name}'s grandmother on his mother's side is #{grandmother.id} #{grandmother.name}"
   else
     menu
   end
 end
 
+def show_grandkids
+  list
+  puts "Enter the number of the relative."
+  person = Person.find(gets.chomp)
+  puts "Now, enter the number of #{person.name}'s children and I'll show you their children."
+  if person.children == nil
+    puts "#{person.name} has no children."
+  else
+    person.children.each_with_index do |child|
+      puts "#{child.id} #{child.name}"
+    end
+    child = Person.find(gets.chomp.to_i)
+    if person.grandkids(child) == nil
+      puts "#{child.name} has no children."
+    else
+      person.grandkids(child).each do |grandkid|
+        puts "#{grandkid.name} is the grandchild of #{person.name} & #{person.spouse.name}"
+      end
+    end
+  end
+end
+
+def show_siblings
+
+end
+
 menu
-
-
-
-
-
-
-
-
 
 
 

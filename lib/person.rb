@@ -3,7 +3,6 @@ class Person < ActiveRecord::Base
 
   after_save :make_marriage_reciprocal
 
-
   def spouse
     if spouse_id.nil?
       nil
@@ -12,11 +11,15 @@ class Person < ActiveRecord::Base
     end
   end
 
-  def child
-    if child_id.nil?
-      nil
+  def children
+    children = []
+    children << Person.where( father_id: self.id )
+    children << Person.where( mother_id: self.id )
+    children.flatten!
+    if children.length == 0
+      children = nil
     else
-      Person.find(child_id)
+      children
     end
   end
 
@@ -34,6 +37,27 @@ class Person < ActiveRecord::Base
 
   def grandmother(parent)
     Person.find(parent.mother_id)
+  end
+
+  def grandkids(child)
+    grandkids = []
+    if child.children == nil
+      nil
+    else
+      child.children.each { |grandkid| grandkids << grandkid }
+      grandkids
+    end
+  end
+
+  def siblings
+    siblings = []
+    siblings << Person.where( father_id: self.father_id, mother_id: self.mother_id).where.not(id: self.id )
+    siblings.flatten!
+    if siblings.length == 0
+      siblings = nil
+    else
+      siblings
+    end
   end
 
 private
