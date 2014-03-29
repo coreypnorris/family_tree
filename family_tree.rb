@@ -156,14 +156,21 @@ def show_grandkids
       puts "#{child.name} has no children."
     else
       person.grandkids(child).each do |grandkid|
-        puts "#{grandkid.name} is the grandchild of #{person.name} & #{person.spouse.name}"
+        puts "#{grandkid.name} is the grandchild of #{person.name} & #{person.spouse.name}."
       end
     end
   end
 end
 
 def show_siblings
-
+  list
+  puts "Enter the number of the relative and I'll show you who their children are."
+  person = Person.find(gets.chomp)
+  if person.siblings == nil
+    puts "#{person.name} has no siblings."
+  else
+    person.siblings.each { |sibling| puts "#{person.name}'s sibling is #{sibling.name}." }
+  end
 end
 
 menu
